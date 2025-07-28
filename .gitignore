@@ -149,4 +149,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.assets
+assets/
+obj/
+urdf/indoor/
