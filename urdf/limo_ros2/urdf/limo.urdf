@@ -1,0 +1,343 @@
+<?xml version="1.0" ?>
+<!--Auto: Zhui Li-->
+<!-- Description: Diese xacro-Datei basiert auf Regeln und definiert Funktionen durch xacro,
+um die Erstellung der Gesamtstruktur des Wagens in Ackerman-Type zu ermöglichen. Die Konstruktion einiger dieser Strukturen erfolgt
+in externen Dateien.-->
+<robot name="limo_ackerman">
+  <!--    <xacro:property name="base_x_size" value="0.19" />-->
+  <!--    <xacro:property name="base_y_size" value="0.31" />-->
+  <!--    <xacro:property name="base_z_size" value="0.12" />-->
+  <!-- -->
+  <!-- definiert ein Nullpunkt, um Modell aufzubauen. Es ist einfach für weitere Darstellungspostion in Simulation-Umgebung -->
+  <link name="base_footprint"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.15"/>
+  </joint>
+  <!-- herstellt base_link als Karosserie -->
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 1.57" xyz="0 0 -0.15"/>
+      <geometry>
+        <mesh filename="C:/Users/trung/Genesis/limo_ros2/limo_car/meshes/limo_base.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <!-- Modell für physikalische Kollision zu modellieren. -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.12 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.0 0.0 0.0"/>
+      <mass value="2.1557"/>
+      <inertia ixx="0.004832360833333334" ixy="0" ixz="0" iyy="0.004383256666666667" iyz="0" izz="0.005622784166666666"/>
+    </inertial>
+  </link>
+  <!--    &lt;!&ndash; mit macro-function renchnet die Trägheitsmoment &ndash;&gt;-->
+  <!--    <link name="inertial_link">-->
+  <!--        <inertial>-->
+  <!--            <origin xyz="0.0 0.0 0.0" />-->
+  <!--            <mass value="${base_mass}" />-->
+  <!--            -->
+  <!--            <inertia ixx="0.24" ixy="0" ixz="0"-->
+  <!--                     iyy="0.96" iyz="0"-->
+  <!--                     izz="0.96" />-->
+  <!--        </inertial>-->
+  <!--    </link>-->
+  <!--    &lt;!&ndash; verbindet link für Trägheitsmonent und Modell &ndash;&gt;-->
+  <!--    <joint name="inertial_joint" type="fixed">-->
+  <!--        <origin xyz="0 0 0" rpy="0 0 0" />-->
+  <!--        <parent link="base_link" />-->
+  <!--        <child link="inertial_link" />-->
+  <!--    </joint>-->
+  <!--  Zwei hinten Räder werden anhand eines externen Modells erstellt und mit dem Körper verbunden-->
+  <link name="hinten_left_wheel_link">
+    <!--        <inertial>-->
+    <!--            <origin xyz="0 0 0" />-->
+    <!--            <mass value="0.5" />-->
+    <!--            <inertia ixx="0.01055" ixy="0" ixz="0" iyy="0.00075" iyz="0" izz="0.01055" /> -->
+    <!--        </inertial>-->
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/trung/Genesis/limo_ros2/limo_car/meshes/limo_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.045"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.0 0.0 0.0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.00033749999999999996" ixy="0" ixz="0" iyy="0.00033749999999999996" iyz="0" izz="0.00050625"/>
+    </inertial>
+  </link>
+  <joint name="hinten_left_wheel" type="continuous">
+    <parent link="base_link"/>
+    <child link="hinten_left_wheel_link"/>
+    <origin rpy="0 0 0" xyz="-0.1 0.07 -0.100998"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="200" velocity="150"/>
+    <dynamics damping="1.0" friction="0.1"/>
+  </joint>
+  <link name="hinten_right_wheel_link">
+    <!--        <inertial>-->
+    <!--            <origin xyz="0 0 0" />-->
+    <!--            <mass value="0.5" />-->
+    <!--            <inertia ixx="0.01055" ixy="0" ixz="0" iyy="0.00075" iyz="0" izz="0.01055" /> -->
+    <!--        </inertial>-->
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/trung/Genesis/limo_ros2/limo_car/meshes/limo_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.045"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.0 0.0 0.0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.00033749999999999996" ixy="0" ixz="0" iyy="0.00033749999999999996" iyz="0" izz="0.00050625"/>
+    </inertial>
+  </link>
+  <joint name="hinten_right_wheel" type="continuous">
+    <parent link="base_link"/>
+    <child link="hinten_right_wheel_link"/>
+    <origin rpy="3.14159 0 0" xyz="-0.1 -0.07 -0.100998"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="200" velocity="150"/>
+    <dynamics damping="1.0" friction="0.1"/>
+  </joint>
+  <link name="laser_link">
+    <pose>0 0 0 0 0 0</pose>
+    <inertial>
+      <mass value="0.1"/>
+      <origin rpy="0 0 0" xyz="0.0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <visual name="laser_visual">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.02"/>
+      </geometry>
+      <material name="laser_material">
+        <color rgba="0.75 0.75 0.75 1"/>
+        <ambient>0.1 0.1 0.1 1</ambient>
+        <diffuse>0.1 0.1 0.2 1</diffuse>
+        <specular>0 0 0 0</specular>
+        <emissive>0 0 0 1</emissive>
+      </material>
+    </visual>
+    <collision name="laser_collision">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.016" radius="0.032"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin rpy="0 0 0" xyz="0.103 0 -0.034"/>
+  </joint>
+  <!-- definiert diesen Anteil gleiche Farbe in Gazebo -->
+  <gazebo reference="laser_link">
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  <link name="depth_camera_link">
+    <pose>0 0 0 0 0 0</pose>
+    <inertial>
+      <mass value="0.1"/>
+      <origin rpy="0 0 0" xyz="0.0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <visual name="depth_camera_visual">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.06 0.015"/>
+      </geometry>
+      <material name="depth_camera_material">
+        <color rgba="0.75 0.75 0.75 1"/>
+        <ambient>0.1 0.1 0.1 1</ambient>
+        <diffuse>0.1 0.1 0.2 1</diffuse>
+        <specular>0 0 0 0</specular>
+        <emissive>0 0 0 1</emissive>
+      </material>
+    </visual>
+    <collision name="depth_camera_collision">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.06 0.015"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="depth_camera_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.084 0 0.03"/>
+    <child link="depth_camera_link"/>
+    <parent link="base_link"/>
+  </joint>
+  <link name="depth_link"/>
+  <joint name="depth_camera_to_camera_joint" type="fixed">
+    <origin rpy="-1.570795 0 -1.570795 " xyz="0 0 0"/>
+    <parent link="depth_camera_link"/>
+    <child link="depth_link"/>
+  </joint>
+  <gazebo reference="depth_camera_link">
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  <link name="imu_link">
+    <pose>0 0 0 0 0 0</pose>
+    <inertial>
+      <mass value="0.01"/>
+      <origin rpy="0 0 0" xyz="0.0 0 0"/>
+      <inertia ixx="1e-7" ixy="0" ixz="0" iyy="1e-7" iyz="0" izz="1e-7"/>
+    </inertial>
+    <visual name="imu_visual">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="imu_material">
+        <color rgba="0.75 0.75 0.75 1"/>
+        <ambient>0.1 0.1 0.1 1</ambient>
+        <diffuse>0.1 0.1 0.2 1</diffuse>
+        <specular>0 0 0 0</specular>
+        <emissive>0 0 0 1</emissive>
+      </material>
+    </visual>
+    <collision name="imu_collision">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0 -0.1"/>
+    <child link="imu_link"/>
+    <parent link="base_link"/>
+  </joint>
+  <gazebo reference="imu_link">
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  <link name="left_steering_hinge">
+    <inertial>
+      <!-- diese Daten kommen aus das Internet -->
+      <mass value="0.25"/>
+      <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525"/>
+      <origin xyz="0 0 0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- es ist sehr klein -->
+        <cylinder length="0.0001" radius="0.0001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.034999999999999996"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_steering_hinge_wheel" type="revolute">
+    <parent link="base_link"/>
+    <child link="left_steering_hinge"/>
+    <origin rpy="0 0 0" xyz="0.1 0.07 -0.100998"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" lower="-0.523598767" upper="0.523598767" velocity="0.5"/>
+    <dynamics damping="1.0" friction="2.0"/>
+  </joint>
+  <link name="front_left_wheel_link">
+    <inertial>
+      <mass value="0.25"/>
+      <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525"/>
+      <origin xyz="0 0 0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/trung/Genesis/limo_ros2/limo_car/meshes/limo_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.045"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_left_wheel" type="continuous">
+    <parent link="left_steering_hinge"/>
+    <child link="front_left_wheel_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="200" velocity="150"/>
+    <dynamics damping="1.0" friction="0.1"/>
+  </joint>
+  <link name="right_steering_hinge">
+    <inertial>
+      <mass value="0.25"/>
+      <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525"/>
+      <origin xyz="0 0 0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0001" radius="0.0001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.034999999999999996"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_steering_hinge_wheel" type="revolute">
+    <parent link="base_link"/>
+    <child link="right_steering_hinge"/>
+    <origin rpy="3.14159 0 0" xyz="0.1 -0.07 -0.100998"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="5" lower="-0.523598767" upper="0.523598767" velocity="0.5"/>
+    <dynamics damping="1.0" friction="2.0"/>
+  </joint>
+  <link name="front_right_wheel_link">
+    <inertial>
+      <mass value="0.25"/>
+      <inertia ixx="0.00525" ixy="0" ixz="0" iyy="0.00035" iyz="0" izz="0.00525"/>
+      <origin xyz="0 0 0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="C:/Users/trung/Genesis/limo_ros2/limo_car/meshes/limo_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0.0225 0"/>
+      <geometry>
+        <cylinder length="0.045" radius="0.045"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_right_wheel" type="continuous">
+    <parent link="right_steering_hinge"/>
+    <child link="front_right_wheel_link"/>
+    <origin rpy="0 0  0" xyz="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="200" velocity="150"/>
+    <dynamics damping="1.0" friction="0.1"/>
+  </joint>
+</robot>

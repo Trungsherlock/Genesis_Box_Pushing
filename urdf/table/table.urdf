@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<robot name="modular_table">
+
+  <!-- Tabletop -->
+  <link name="tabletop">
+    <contact>
+      <lateral_friction value="1.0"/>
+    </contact>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="0.0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="1.5 1.0 0.055"/>  <!-- L x W x H -->
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="1.5 1.0 0.055"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Leg template (use same geometry, different positions) -->
+  <link name="leg_fl">
+    <visual>
+      <origin xyz="-0.65 -0.4 -0.2225"/>
+      <geometry>
+        <box size="0.1 0.1 0.445"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+  <joint name="joint_leg_fl" type="fixed">
+    <parent link="tabletop"/>
+    <child link="leg_fl"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="leg_fr">
+    <visual>
+      <origin xyz="0.65 -0.4 -0.2225"/>
+      <geometry>
+        <box size="0.1 0.1 0.445"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+  <joint name="joint_leg_fr" type="fixed">
+    <parent link="tabletop"/>
+    <child link="leg_fr"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="leg_bl">
+    <visual>
+      <origin xyz="-0.65 0.4 -0.2225"/>
+      <geometry>
+        <box size="0.1 0.1 0.445"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+  <joint name="joint_leg_bl" type="fixed">
+    <parent link="tabletop"/>
+    <child link="leg_bl"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="leg_br">
+    <visual>
+      <origin xyz="0.65 0.4 -0.2225"/>
+      <geometry>
+        <box size="0.1 0.1 0.445"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+  <joint name="joint_leg_br" type="fixed">
+    <parent link="tabletop"/>
+    <child link="leg_br"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>
